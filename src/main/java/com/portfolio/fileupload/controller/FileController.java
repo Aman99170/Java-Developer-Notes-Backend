@@ -22,7 +22,7 @@ import com.portfolio.fileupload.service.FileService;
 
 @RestController
 @RequestMapping("/file")
-@CrossOrigin(origins = "*",exposedHeaders = "Content-Disposition")
+@CrossOrigin(origins = "${frontend.url}",exposedHeaders = "Content-Disposition")
 public class FileController {
 
   @Autowired
