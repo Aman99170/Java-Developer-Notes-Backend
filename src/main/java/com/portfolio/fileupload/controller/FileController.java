@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.fileupload.entity.FileEntity;
 import com.portfolio.fileupload.entity.TopicEntity;
+import com.portfolio.fileupload.repository.FileRepository;
 import com.portfolio.fileupload.service.FileService;
 
 @RestController
@@ -27,6 +28,8 @@ public class FileController {
 
   @Autowired
   private FileService fileService;
+  @Autowired
+  private FileRepository fileRepository;
 
   @PostMapping(value="/fileUpload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public Object uploadFile(@ModelAttribute FileEntity fileEntity) throws IOException {
@@ -42,6 +45,7 @@ public class FileController {
   public ResponseEntity<byte[]> getFile(@PathVariable Long id) {
     FileEntity fileEntity = fileService.getFile(id);
     if (fileEntity != null) {
+    	fileRepository.updateCount(id);
     	String mimeType = determineMimeType(fileEntity.getOriginalFileName());
       return ResponseEntity.ok()
     		  .contentType(MediaType.parseMediaType(mimeType))
